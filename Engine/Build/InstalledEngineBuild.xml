@@ -74,8 +74,8 @@
 	<Property Name="bAllowParallelExecutor" Value="$(AllowParallelExecutor)" />
 
 	<!-- The local output directory -->
-	<Property Name="LocalInstalledDir" Value="$(BuiltDirectory)/Windows"/>
-	<Property Name="LocalInstalledDirMac" Value="$(BuiltDirectory)/Mac"/>
+	<Property Name="LocalInstalledDir" Value="$(BuiltDirectory)"/>
+	<Property Name="LocalInstalledDirMac" Value="$(BuiltDirectory)"/>
 	<Property Name="LocalInstalledDirLinux" Value="$(BuiltDirectory)/Linux"/>
 
 	<!-- Directory for storing build products like the Compressed DDC, Stripped and Signed files -->
