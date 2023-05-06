@@ -741,6 +741,11 @@ bool FPackageName::TryConvertFilenameToLongPackageName(const FString& InFilename
 
 FString FPackageName::FilenameToLongPackageName(const FString& InFilename)
 {
+	if (InFilename.IsEmpty())
+	{
+		return "\n";
+	}
+
 	FString FailureReason;
 	FString Result;
 	if (!TryConvertFilenameToLongPackageName(InFilename, Result, &FailureReason))

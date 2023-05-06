@@ -111,6 +111,7 @@ DEFINE_STAT(STAT_StaticRelevance);
 DEFINE_STAT(STAT_ViewRelevance);
 DEFINE_STAT(STAT_ComputeViewRelevance);
 DEFINE_STAT(STAT_OcclusionCull);
+DEFINE_STAT(STAT_SoftwareOcclusionCull);
 DEFINE_STAT(STAT_UpdatePrimitiveFading);
 DEFINE_STAT(STAT_PrimitiveCull);
 DEFINE_STAT(STAT_DecompressPrecomputedOcclusion);

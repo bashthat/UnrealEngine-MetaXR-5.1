@@ -7,7 +7,8 @@
 #include "Input/Reply.h"
 #include "Widgets/SCompoundWidget.h"
 #include "IPersonaPreviewScene.h"
-	
+#include "UObject/MetaData.h"
+#include "UObject/SavePackage.h"	
 #include "SPoseAssetNameWidget.h"
 
 class IEditableSkeleton;

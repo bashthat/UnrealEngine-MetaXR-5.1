@@ -246,6 +246,12 @@ namespace UnrealBuildTool
 			{
 				Arguments.Add("-Wno-range-loop-analysis");
 			}
+			if (CompilerVersionGreaterOrEqual(14, 0, 0))
+			{
+				Arguments.Add("-Wno-deprecated-pragma");
+				Arguments.Add("-Wno-bitwise-instead-of-logical");
+				Arguments.Add("-Wno-undefined-var-template");
+			}
 		}
 
 		/// <inheritdoc/>

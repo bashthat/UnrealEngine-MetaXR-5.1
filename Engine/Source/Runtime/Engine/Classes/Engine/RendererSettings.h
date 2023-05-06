@@ -318,6 +318,12 @@ class ENGINE_API URendererSettings : public UDeveloperSettings
 	uint32 bMobileAllowDitheredLODTransition:1;
 
 	UPROPERTY(config, EditAnywhere, Category = Mobile, meta = (
+		ConsoleVariable = "r.Mobile.AllowSoftwareOcclusion", DisplayName = "Support Software Occlusion Culling",
+		ToolTip = "Whether to support 'Software Occlusion Culling' on mobile platforms. This will package occluder information and enable Software Occlusion Culling.",
+		ConfigRestartRequired = false))
+	uint32 bMobileAllowSoftwareOcclusionCulling : 1;
+
+	UPROPERTY(config, EditAnywhere, Category = Mobile, meta = (
 		EditCondition = "bVirtualTextures",
 		ConsoleVariable = "r.Mobile.VirtualTextures", DisplayName = "Enable virtual texture support on Mobile",
 		ToolTip = "Whether to support virtual textures on mobile. Requires general virtual texturing option enabled as well. Changing this setting requires restarting the editor.",
@@ -812,6 +818,7 @@ class ENGINE_API URendererSettings : public UDeveloperSettings
 	uint32 bMobilePostProcessing:1;
 
 	UPROPERTY(config, EditAnywhere, Category = VR, meta = (
+		EditCondition = "!bMobilePostProcessing",
 		ConsoleVariable = "vr.MobileMultiView", DisplayName = "Mobile Multi-View",
 		ToolTip = "Enable single-pass stereoscopic rendering on mobile platforms.",
 		ConfigRestartRequired = true))

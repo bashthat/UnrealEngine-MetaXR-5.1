@@ -1969,6 +1969,82 @@ int32 FStaticMeshRenderData::GetFirstValidLODIdx(int32 MinIdx) const
 	return LODIndex;
 }
 
+FStaticMeshOccluderData::FStaticMeshOccluderData()
+{
+	VerticesSP = MakeShared<FOccluderVertexArray, ESPMode::ThreadSafe>();
+	IndicesSP = MakeShared<FOccluderIndexArray, ESPMode::ThreadSafe>();
+}
+
+SIZE_T FStaticMeshOccluderData::GetResourceSizeBytes() const
+{
+	return VerticesSP->GetAllocatedSize() + IndicesSP->GetAllocatedSize();
+}
+
+TUniquePtr<FStaticMeshOccluderData> FStaticMeshOccluderData::Build(UStaticMesh* Owner)
+{
+	TUniquePtr<FStaticMeshOccluderData> Result;
+#if WITH_EDITOR		
+	if (Owner->LODForOccluderMesh >= 0)
+	{
+		// TODO: Custom geometry for occluder mesh?
+		int32 LODIndex = FMath::Min(Owner->LODForOccluderMesh, Owner->GetRenderData()->LODResources.Num() - 1);
+		const FStaticMeshLODResources& LODModel = Owner->GetRenderData()->LODResources[LODIndex];
+
+		const FRawStaticIndexBuffer& IndexBuffer = LODModel.DepthOnlyIndexBuffer.GetNumIndices() > 0 ? LODModel.DepthOnlyIndexBuffer : LODModel.IndexBuffer;
+		int32 NumVtx = LODModel.VertexBuffers.PositionVertexBuffer.GetNumVertices();
+		int32 NumIndices = IndexBuffer.GetNumIndices();
+
+		if (NumVtx > 0 && NumIndices > 0 && !IndexBuffer.Is32Bit())
+		{
+			Result = MakeUnique<FStaticMeshOccluderData>();
+
+			Result->VerticesSP->SetNumUninitialized(NumVtx);
+			Result->IndicesSP->SetNumUninitialized(NumIndices);
+
+			const FVector3f* V0 = &LODModel.VertexBuffers.PositionVertexBuffer.VertexPosition(0);
+			const uint16* Indices = IndexBuffer.AccessStream16();
+
+			FMemory::Memcpy(Result->VerticesSP->GetData(), V0, NumVtx * sizeof(FVector));
+			FMemory::Memcpy(Result->IndicesSP->GetData(), Indices, NumIndices * sizeof(uint16));
+		}
+	}
+#endif // WITH_EDITOR
+	return Result;
+}
+
+void FStaticMeshOccluderData::SerializeCooked(FArchive& Ar, UStaticMesh* Owner)
+{
+#if WITH_EDITOR	
+	if (Ar.IsSaving())
+	{
+		bool bHasOccluderData = false;
+		if (Ar.CookingTarget()->SupportsFeature(ETargetPlatformFeatures::SoftwareOcclusion) && Owner->GetOccluderData())
+		{
+			bHasOccluderData = true;
+		}
+
+		Ar << bHasOccluderData;
+
+		if (bHasOccluderData)
+		{
+			Owner->GetOccluderData()->VerticesSP->BulkSerialize(Ar);
+			Owner->GetOccluderData()->IndicesSP->BulkSerialize(Ar);
+		}
+	}
+	else
+#endif // WITH_EDITOR
+	{
+		bool bHasOccluderData;
+		Ar << bHasOccluderData;
+		if (bHasOccluderData)
+		{
+			Owner->SetOccluderData(MakeUnique<FStaticMeshOccluderData>());
+			Owner->GetOccluderData()->VerticesSP->BulkSerialize(Ar);
+			Owner->GetOccluderData()->IndicesSP->BulkSerialize(Ar);
+		}
+	}
+}
+
 
 void UStaticMesh::RequestUpdateCachedRenderState() const
 {
@@ -3180,6 +3256,7 @@ UStaticMesh::UStaticMesh(const FObjectInitializer& ObjectInitializer)
 	bHasNavigationData=true;
 #if WITH_EDITORONLY_DATA
 	bAutoComputeLODScreenSize=true;
+	LODForOccluderMesh = -1;
 	ImportVersion = EImportStaticMeshVersion::BeforeImportStaticMeshVersionWasAdded;
 	NumStreamedLODs.Default = -1;
 	GetHiResSourceModel().StaticMeshDescriptionBulkData = CreateDefaultSubobject<UStaticMeshDescriptionBulkData>(TEXT("HiResMeshDescription"));
@@ -3277,6 +3354,27 @@ void UStaticMesh::SetRenderData(TUniquePtr<class FStaticMeshRenderData>&& InRend
 
 	PRAGMA_DISABLE_DEPRECATION_WARNINGS
 	RenderData = MoveTemp(InRenderData);
+	PRAGMA_ENABLE_DEPRECATION_WARNINGS
+}
+
+FStaticMeshOccluderData* UStaticMesh::GetOccluderData()
+{
+	PRAGMA_DISABLE_DEPRECATION_WARNINGS
+		return OccluderData.Get();
+	PRAGMA_ENABLE_DEPRECATION_WARNINGS
+}
+
+const FStaticMeshOccluderData* UStaticMesh::GetOccluderData() const
+{
+	PRAGMA_DISABLE_DEPRECATION_WARNINGS
+		return OccluderData.Get();
+	PRAGMA_ENABLE_DEPRECATION_WARNINGS
+}
+
+void UStaticMesh::SetOccluderData(TUniquePtr<class FStaticMeshOccluderData>&& InOccluderData)
+{
+	PRAGMA_DISABLE_DEPRECATION_WARNINGS
+		OccluderData = MoveTemp(InOccluderData);
 	PRAGMA_ENABLE_DEPRECATION_WARNINGS
 }
 

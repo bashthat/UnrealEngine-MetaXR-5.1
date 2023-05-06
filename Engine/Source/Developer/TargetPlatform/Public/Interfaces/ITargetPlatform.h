@@ -78,6 +78,9 @@ enum class ETargetPlatformFeatures
 	/* Should split paks into smaller sized paks */
 	ShouldSplitPaksIntoSmallerSizes,
 
+	/* The platform uses software rasterization of the scene for primitive occlusion */
+	SoftwareOcclusion,
+
 	/* The platform supports half float vertex format */
 	HalfFloatVertexFormat,
 

@@ -59,6 +59,55 @@ void FAssetTypeActions_AnimationAsset::GetActions(const TArray<UObject*>& InObje
 			FCanExecuteAction()
 			)
 		);
+
+	Section.AddSubMenu(
+		"RetargetAnimSubmenu",
+		LOCTEXT("RetargetAnimSubmenu", "Retarget Anim Assets"),
+		LOCTEXT("RetargetAnimSubmenu_ToolTip", "Opens the retarget anim assets menu"),
+		FNewMenuDelegate::CreateSP(this, &FAssetTypeActions_AnimationAsset::FillRetargetMenu, InObjects),
+		false,
+		FSlateIcon(FAppStyle::GetAppStyleSetName(), "Persona.AssetActions.RetargetSkeleton")
+	);
+}
+
+void FAssetTypeActions_AnimationAsset::FillRetargetMenu(FMenuBuilder& MenuBuilder, const TArray<UObject*> InObjects)
+{
+	bool bAllSkeletonsNull = true;
+
+	for (auto Iter = InObjects.CreateConstIterator(); Iter; ++Iter)
+	{
+		if (UAnimationAsset* AnimAsset = Cast<UAnimationAsset>(*Iter))
+		{
+			if (AnimAsset->GetSkeleton())
+			{
+				bAllSkeletonsNull = false;
+				break;
+			}
+		}
+	}
+
+	if (bAllSkeletonsNull)
+	{
+		MenuBuilder.AddMenuEntry(
+			LOCTEXT("AnimAsset_RetargetSkeletonInPlace", "Retarget skeleton on existing Anim Assets"),
+			LOCTEXT("AnimAsset_RetargetSkeletonInPlaceTooltip", "Retargets the selected Anim Assets to a new skeleton (and optionally all referenced animations too)"),
+			FSlateIcon(FAppStyle::GetAppStyleSetName(), "Persona.AssetActions.RetargetSkeleton"),
+			FUIAction(
+				FExecuteAction::CreateSP(this, &FAssetTypeActions_AnimationAsset::RetargetAssets, InObjects, false, false, TSharedPtr<IToolkitHost>()), // false = do not duplicate assets first
+				FCanExecuteAction()
+			)
+		);
+	}
+
+	MenuBuilder.AddMenuEntry(
+		LOCTEXT("AnimAsset_DuplicateAndRetargetSkeleton", "Duplicate Anim Assets and Retarget"),
+		LOCTEXT("AnimAsset_DuplicateAndRetargetSkeletonTooltip", "Duplicates and then retargets the selected Anim Assets to a new skeleton (and optionally all referenced animations too)"),
+		FSlateIcon(FAppStyle::GetAppStyleSetName(), "Persona.AssetActions.DuplicateAndRetargetSkeleton"),
+		FUIAction(
+			FExecuteAction::CreateSP(this, &FAssetTypeActions_AnimationAsset::RetargetAssets, InObjects, true, false, TSharedPtr<IToolkitHost>()), // true = duplicate assets and retarget them
+			FCanExecuteAction()
+		)
+	);
 }
 
 UThumbnailInfo* FAssetTypeActions_AnimationAsset::GetThumbnailInfo(UObject* Asset) const
@@ -247,6 +296,85 @@ bool FAssetTypeActions_AnimationAsset::ReplaceMissingSkeleton(TArray<TObjectPtr<
 	const TSharedPtr<SReplaceMissingSkeletonDialog> PickSkeletonWindow = SNew(SReplaceMissingSkeletonDialog).AnimAssets(AnimsToFix);
 	const bool bWasSkeletonReplaced = PickSkeletonWindow.Get()->ShowModal();
 	return bWasSkeletonReplaced;
+}
+
+void FAssetTypeActions_AnimationAsset::RetargetAnimationHandler(USkeleton* OldSkeleton, USkeleton* NewSkeleton, bool bRemapReferencedAssets, bool bAllowRemapToExisting, bool bConvertSpaces, const EditorAnimUtils::FNameDuplicationRule* NameRule, TArray<TWeakObjectPtr<UObject>> InAnimAssets)
+{
+	if (!OldSkeleton || OldSkeleton->GetPreviewMesh(false))
+	{
+		EditorAnimUtils::RetargetAnimations(OldSkeleton, NewSkeleton, InAnimAssets, bRemapReferencedAssets, NameRule, bConvertSpaces);
+	}
+	else
+	{
+		FFormatNamedArguments Args;
+		Args.Add(TEXT("OldSkeletonName"), FText::FromString(GetNameSafe(OldSkeleton)));
+		Args.Add(TEXT("NewSkeletonName"), FText::FromString(GetNameSafe(NewSkeleton)));
+		FNotificationInfo Info(FText::Format(LOCTEXT("Retarget Failed", "Old Skeleton {OldSkeletonName} and New Skeleton {NewSkeletonName} need to have Preview Mesh set up to convert animation"), Args));
+		Info.ExpireDuration = 5.0f;
+		Info.bUseLargeFont = false;
+		TSharedPtr<SNotificationItem> Notification = FSlateNotificationManager::Get().AddNotification(Info);
+		if (Notification.IsValid())
+		{
+			Notification->SetCompletionState(SNotificationItem::CS_Fail);
+		}
+	}
+}
+
+void FAssetTypeActions_AnimationAsset::RetargetNonSkeletonAnimationHandler(USkeleton* OldSkeleton, USkeleton* NewSkeleton, bool bRemapReferencedAssets, bool bAllowRemapToExisting, bool bConvertSpaces, const EditorAnimUtils::FNameDuplicationRule* NameRule, TArray<TWeakObjectPtr<UObject>> InAnimAssets, TWeakPtr<IToolkitHost> EditWithinLevelEditor)
+{
+	RetargetAnimationHandler(OldSkeleton, NewSkeleton, bRemapReferencedAssets, bAllowRemapToExisting, bConvertSpaces, NameRule, InAnimAssets);
+
+#if WITH_EDITOR
+	if (NewSkeleton)
+	{
+		for (auto Asset : InAnimAssets)
+		{
+			if (Asset.IsValid())
+			{
+				if (EditWithinLevelEditor.IsValid())
+				{
+
+					GEditor->GetEditorSubsystem<UAssetEditorSubsystem>()->OpenEditorForAsset(Asset.Get(), EToolkitMode::WorldCentric, EditWithinLevelEditor.Pin());
+				}
+				else
+				{
+					GEditor->GetEditorSubsystem<UAssetEditorSubsystem>()->OpenEditorForAsset(Asset.Get());
+				}
+			}
+		}
+	}
+	else
+	{
+		FMessageDialog::Open(EAppMsgType::Ok, LOCTEXT("FailedToLoadSkeletonlessAnimAsset", "The Anim Asset could not be loaded because it's skeleton is missing."));
+	}
+#endif
+
+}
+
+
+void FAssetTypeActions_AnimationAsset::RetargetAssets(TArray<UObject*> InAnimAssets, bool bDuplicateAssets, bool bOpenEditor, TSharedPtr<class IToolkitHost> EditWithinLevelEditor)
+{
+	bool bRemapReferencedAssets = false;
+	USkeleton* NewSkeleton = NULL;
+	USkeleton* OldSkeleton = NULL;
+	if (InAnimAssets.Num() > 0)
+	{
+		UAnimationAsset* AnimAsset = CastChecked<UAnimationAsset>(InAnimAssets[0]);
+		OldSkeleton = AnimAsset->GetSkeleton();
+	}
+
+	const FText Message = LOCTEXT("SelectSkeletonToRemap", "Select the skeleton to remap this asset to.");
+
+	auto AnimAssets = GetTypedWeakObjectPtrs<UObject>(InAnimAssets);
+
+	if (bOpenEditor)
+	{
+		SAnimationRemapSkeleton::ShowWindow(OldSkeleton, Message, bDuplicateAssets, FOnRetargetAnimation::CreateSP(this, &FAssetTypeActions_AnimationAsset::RetargetNonSkeletonAnimationHandler, AnimAssets, TWeakPtr<class IToolkitHost>(EditWithinLevelEditor)));
+	}
+	else
+	{
+		SAnimationRemapSkeleton::ShowWindow(OldSkeleton, Message, bDuplicateAssets, FOnRetargetAnimation::CreateSP(this, &FAssetTypeActions_AnimationAsset::RetargetAnimationHandler, AnimAssets));
+	}
 }
 
 #undef LOCTEXT_NAMESPACE

@@ -57,6 +57,13 @@ FAutoConsoleVariableRef CVarOcclusionCullCascadedShadowMaps(
 	ECVF_Scalability | ECVF_RenderThreadSafe
 	);
 
+static TAutoConsoleVariable<int32> CVarMobileAllowSoftwareOcclusion(
+	TEXT("r.Mobile.AllowSoftwareOcclusion"),
+	0,
+	TEXT("Whether to allow rasterizing scene on CPU for primitive occlusion.\n"),
+	ECVF_RenderThreadSafe
+);
+
 static TAutoConsoleVariable<bool> CVarMobileEnableOcclusionExtraFrame(
 	TEXT("r.Mobile.EnableOcclusionExtraFrame"),
 	true,
@@ -290,6 +297,21 @@ bool FSceneViewState::IsShadowOccluded(FSceneViewState::FProjectedShadowKey Shad
 		// If the shadow wasn't queried the previous frame, it isn't occluded.
 
 		return false;
+	}
+}
+
+void FSceneViewState::ConditionallyAllocateSceneSoftwareOcclusion(ERHIFeatureLevel::Type InFeatureLevel)
+{
+	bool bMobileAllowSoftwareOcclusion = CVarMobileAllowSoftwareOcclusion.GetValueOnAnyThread() != 0;
+	bool bShouldBeEnabled = InFeatureLevel <= ERHIFeatureLevel::ES3_1 && bMobileAllowSoftwareOcclusion;
+
+	if (bShouldBeEnabled && !SceneSoftwareOcclusion)
+	{
+		SceneSoftwareOcclusion = MakeUnique<FSceneSoftwareOcclusion>();
+	}
+	else if (!bShouldBeEnabled && SceneSoftwareOcclusion)
+	{
+		SceneSoftwareOcclusion.Reset();
 	}
 }
 

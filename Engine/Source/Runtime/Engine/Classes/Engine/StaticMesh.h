@@ -613,6 +613,13 @@ private:
 	TUniquePtr<class FStaticMeshRenderData> RenderData;
 
 public:
+	/** Pointer to the occluder data used to rasterize this static mesh for software occlusion. */
+	UE_DEPRECATED(4.27, "Please do not access this member directly; use UStaticMesh::GetOccluderData() or UStaticMesh::SetOccluderData().")
+		TUniquePtr<class FStaticMeshOccluderData> OccluderData;
+
+	ENGINE_API FStaticMeshOccluderData* GetOccluderData();
+	ENGINE_API const FStaticMeshOccluderData* GetOccluderData() const;
+	ENGINE_API void SetOccluderData(TUniquePtr<class FStaticMeshOccluderData>&& InOccluderData);
 #if WITH_EDITOR
 	ENGINE_API bool IsCompiling() const override { return AsyncTask != nullptr || LockedProperties.load(std::memory_order_relaxed) != 0; }
 #else
@@ -1143,6 +1150,14 @@ public:
 	/** If the user has modified collision in any way or has custom collision imported. Used for determining if to auto generate collision on import */
 	UPROPERTY(EditAnywhere, Category = Collision)
 	bool bCustomizedCollision;
+
+	/**
+	 *	Specifies which mesh LOD to use as occluder geometry for software occlusion
+	 *  Set to -1 to not use this mesh as occluder
+	 */
+	UPROPERTY(EditAnywhere, Category = StaticMesh, AdvancedDisplay, meta = (DisplayName = "LOD For Occluder Mesh"))
+		int32 LODForOccluderMesh;
+
 #endif // WITH_EDITORONLY_DATA
 
 private:

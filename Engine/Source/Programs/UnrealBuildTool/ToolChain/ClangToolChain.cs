@@ -547,6 +547,8 @@ namespace UnrealBuildTool
 			if (CompilerVersionGreaterOrEqual(14, 0, 0))
 			{
 				Arguments.Add("-Wno-bitwise-instead-of-logical");       // https://clang.llvm.org/docs/DiagnosticsReference.html#wbitwise-instead-of-logical			// new warning for clang 14
+				Arguments.Add("-Wno-deprecated-pragma");
+				Arguments.Add("-Wno-undefined-var-template");
 			}
 
 			Arguments.Add("-Wno-gnu-string-literal-operator-template"); // https://clang.llvm.org/docs/DiagnosticsReference.html#wgnu-string-literal-operator-template	// We use this feature to allow static FNames.

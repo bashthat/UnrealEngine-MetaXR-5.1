@@ -44,4 +44,14 @@ private:
 	
 	/** When skeleton asset is missing, allow replacing skeleton asset */ 
 	bool ReplaceMissingSkeleton(TArray<UObject*> InAnimBlueprints) const;
+
+	/** Handler to fill the retarget submenu */
+	void FillRetargetMenu(class UToolMenu* Menu, const TArray<UObject*> InObjects);
+
+	/** Context menu item handler for changing the supplied assets skeletons */
+	void RetargetAssets(TArray<UObject*> InAnimBlueprints, bool bDuplicateAssets);
+
+	/** Handler for retargeting */
+	void RetargetAnimationHandler(USkeleton* OldSkeleton, USkeleton* NewSkeleton, bool bRemapReferencedAssets, bool bAllowRemapToExisting, bool bConvertSpaces, const EditorAnimUtils::FNameDuplicationRule* NameRule, TArray<TWeakObjectPtr<UObject>> AnimBlueprints);
+
 };

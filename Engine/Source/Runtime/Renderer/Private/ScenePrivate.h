@@ -38,6 +38,7 @@
 #include "SceneRendering.h"
 #include "LightMapRendering.h"
 #include "VelocityRendering.h"
+#include "SceneSoftwareOcclusion.h"
 #include "BasePassRendering.h"
 #include "MobileBasePassRendering.h"
 #include "VolumeRendering.h"
@@ -769,9 +770,15 @@ public:
 	FHLODVisibilityState HLODVisibilityState;
 	TMap<FPrimitiveComponentId, FHLODSceneNodeVisibilityState> HLODSceneNodeVisibilityStates;
 
+	// Software occlusion data
+	TUniquePtr<FSceneSoftwareOcclusion> SceneSoftwareOcclusion;
+
 	void UpdatePreExposure(FViewInfo& View);
 
 private:
+
+	void ConditionallyAllocateSceneSoftwareOcclusion(ERHIFeatureLevel::Type InFeatureLevel);
+
 	/** The current frame PreExposure */
 	float PreExposure;
 
@@ -1354,6 +1361,14 @@ public:
 		{
 			Collector.AddReferencedObject(FilmGrainCache.Texture);
 		}
+	}
+
+	/** called in InitViews() */
+	void OnStartRender(FViewInfo& View, FSceneViewFamily& ViewFamily)
+	{
+		check(IsInRenderingThread());
+
+		ConditionallyAllocateSceneSoftwareOcclusion(View.GetFeatureLevel());
 	}
 
 	// needed for GetReusableMID()

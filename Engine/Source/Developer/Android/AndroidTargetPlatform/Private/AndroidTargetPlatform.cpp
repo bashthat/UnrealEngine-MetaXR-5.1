@@ -319,6 +319,12 @@ bool FAndroidTargetPlatform::SupportsVulkanSM5() const
 	return bSupportsMobileVulkanSM5;
 }
 
+bool FAndroidTargetPlatform::SupportsSoftwareOcclusion() const
+{
+	static auto* CVarMobileAllowSoftwareOcclusion = IConsoleManager::Get().FindTConsoleVariableDataInt(TEXT("r.Mobile.AllowSoftwareOcclusion"));
+	return CVarMobileAllowSoftwareOcclusion->GetValueOnAnyThread() != 0;
+}
+
 /* ITargetPlatform overrides
  *****************************************************************************/
 
@@ -400,6 +406,9 @@ bool FAndroidTargetPlatform::SupportsFeature( ETargetPlatformFeatures Feature ) 
 		case ETargetPlatformFeatures::HighQualityLightmaps:
 		case ETargetPlatformFeatures::DeferredRendering:
 			return SupportsVulkanSM5();
+
+		case ETargetPlatformFeatures::SoftwareOcclusion:
+			return SupportsSoftwareOcclusion();
 
 		case ETargetPlatformFeatures::VirtualTextureStreaming:
 			return UsesVirtualTextures();

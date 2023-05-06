@@ -531,6 +531,10 @@ public:
 	*/
 	EShaderPlatform GetShaderPlatform() const { return GShaderPlatformForFeatureLevel[FeatureLevel]; }
 
+	bool GetAllowSwitchVerticalAxis() const { return bAllowsToSwitchVerticalAxis; }
+
+	void SetAllowSwitchVerticalAxis(bool bInAllowsToSwitchVerticalAxis) { bAllowsToSwitchVerticalAxis = bInAllowsToSwitchVerticalAxis; }
+
 public:
 	float AlphaModulate;
 
@@ -628,6 +632,8 @@ private:
 	FGameTime Time;
 	/** true, if Canvas should be scaled to whole render target */
 	bool bScaledToRenderTarget;
+	// True if canvas allows switching vertical axis; false will ignore any flip
+	bool bAllowsToSwitchVerticalAxis;
 	/** Feature level that we are currently rendering with */
 	ERHIFeatureLevel::Type FeatureLevel;
 
