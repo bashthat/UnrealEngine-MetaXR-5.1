@@ -136,7 +136,7 @@ public:
 	{
 		// GammaColorScaleAndInverse
 
-		float InvDisplayGamma = 1.f / FMath::Max<float>(DisplayGamma,KINDA_SMALL_NUMBER);
+		float InvDisplayGamma = 1.f / FMath::Max<float>(DisplayGamma,UE_KINDA_SMALL_NUMBER);
 		float OneMinusOverlayBlend = 1.f - ColorOverlay.A;
 
 		FVector4f ColorScaleAndInverse;

@@ -840,7 +840,7 @@ const struct FReferenceSkeleton& SRigWindow::GetReferenceSkeleton() const
 {
 	// have to change this to preview mesh because that's what the retarget base pose will be
 	UDebugSkelMeshComponent* PreviewMeshComp = PreviewScenePtr.Pin()->GetPreviewMeshComponent();
-	USkeletalMesh* PreviewMesh = (PreviewMeshComp) ? ToRawPtr(PreviewMeshComp->SkeletalMesh) : nullptr;
+	USkeletalMesh* PreviewMesh = (PreviewMeshComp) ? ToRawPtr(PreviewMeshComp->GetSkeletalMeshAsset()) : nullptr;
 	// it's because retarget base pose leaves in mesh, so if you give ref skeleton of skeleton, you might have joint that your mesh doesn't have
 	return (PreviewMesh) ? PreviewMesh->GetRefSkeleton() : EditableSkeletonPtr.Pin()->GetSkeleton().GetReferenceSkeleton();
 }
@@ -985,7 +985,7 @@ FReply SRigWindow::OnSaveMapping()
 			UPackage* Package = CreatePackage(*SavePackageName);
 			UNodeMappingContainer* MapperClass = NewObject<UNodeMappingContainer>(Package, *SaveAssetName, RF_Public | RF_Standalone);
 			USkeletalMeshComponent* PreviewMeshComp = PreviewScenePtr.Pin()->GetPreviewMeshComponent();
-			USkeletalMesh* PreviewMesh = PreviewMeshComp->SkeletalMesh;
+			USkeletalMesh* PreviewMesh = PreviewMeshComp->GetSkeletalMeshAsset();
 			if (MapperClass && PreviewMesh)
 			{
 				// update mapping information on the class

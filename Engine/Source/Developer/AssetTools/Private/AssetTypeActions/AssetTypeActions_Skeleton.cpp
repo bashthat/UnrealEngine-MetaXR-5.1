@@ -965,7 +965,7 @@ void FAssetTypeActions_Skeleton::RetargetSkeleton(TArray<FAssetToRemapSkeleton>&
 	for (FThreadSafeObjectIterator Iter(USkeletalMeshComponent::StaticClass()); Iter; ++Iter)
 	{
 		USkeletalMeshComponent* MeshComponent = Cast<USkeletalMeshComponent>(*Iter);
-		if (MeshComponent->SkeletalMesh && MeshComponent->SkeletalMesh->GetSkeleton() == OldSkeleton)
+		if (MeshComponent->GetSkeletalMeshAsset() && MeshComponent->GetSkeletalMeshAsset()->GetSkeleton() == OldSkeleton)
 		{
 			MeshComponent->InitAnim(true);
 		}
