@@ -14,11 +14,11 @@ void FOculusXRMorphTargetsController::ResetMorphTargetCurves(USkinnedMeshCompone
 	if (TargetMeshComponent)
 	{
 		TargetMeshComponent->ActiveMorphTargets.Reset();
-
+		PRAGMA_DISABLE_DEPRECATION_WARNINGS
 		if (TargetMeshComponent->SkeletalMesh)
 		{
 			TargetMeshComponent->MorphTargetWeights.SetNum(TargetMeshComponent->SkeletalMesh->GetMorphTargets().Num());
-
+		PRAGMA_ENABLE_DEPRECATION_WARNINGS
 			// we need this code to ensure the buffer gets cleared whether or not you have morphtarget curve set
 			// the case, where you had morphtargets weight on, and when you clear the weight, you want to make sure
 			// the buffer gets cleared and resized
@@ -36,12 +36,14 @@ void FOculusXRMorphTargetsController::ResetMorphTargetCurves(USkinnedMeshCompone
 
 void FOculusXRMorphTargetsController::ApplyMorphTargets(USkinnedMeshComponent* TargetMeshComponent)
 {
+	PRAGMA_DISABLE_DEPRECATION_WARNINGS
 	if (TargetMeshComponent && TargetMeshComponent->SkeletalMesh)
 	{
 		if (MorphTargetCurves.Num() > 0)
 		{
 			FAnimationRuntime::AppendActiveMorphTargets(TargetMeshComponent->SkeletalMesh, MorphTargetCurves, TargetMeshComponent->ActiveMorphTargets, TargetMeshComponent->MorphTargetWeights);
 		}
+	PRAGMA_ENABLE_DEPRECATION_WARNINGS
 	}
 }
 

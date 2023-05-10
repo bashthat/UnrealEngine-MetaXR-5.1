@@ -1217,9 +1217,6 @@ public:
 
 	float NearClippingDistance;
 
-	/** Handle the far cull override directly, the ViewFrustum does not apply a far plane */
-	float FarCullDistance;
-
 	/** Monoscopic culling frustum, same as ViewFrustum in case of non-stereo */
 	FConvexVolume CullingFrustum;
 
@@ -1264,6 +1261,9 @@ public:
 
 	/** Whether this view is being used to render a planar reflection. */
 	bool bIsPlanarReflection;
+
+	/** Handle the far cull override directly, the ViewFrustum does not apply a far plane */
+	float FarCullDistance;
 
 	/** Whether this view is being used to render a runtime virtual texture. */
 	bool bIsVirtualTexture;

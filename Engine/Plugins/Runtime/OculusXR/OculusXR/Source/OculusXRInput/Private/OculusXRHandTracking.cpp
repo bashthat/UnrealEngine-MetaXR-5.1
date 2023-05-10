@@ -556,9 +556,9 @@ TArray<FOculusXRCapsuleCollider> FOculusHandTracking::InitializeHandPhysics(cons
 		FVector CapsulePointZero = OvrBoneVectorToFVector(OvrBoneCapsule.Points[0], WorldToMeters);
 		FVector CapsulePointOne = OvrBoneVectorToFVector(OvrBoneCapsule.Points[1], WorldToMeters);
 		FVector Delta = (CapsulePointOne - CapsulePointZero);
-
+		PRAGMA_DISABLE_DEPRECATION_WARNINGS
 		FName BoneName = HandComponent->SkeletalMesh->GetRefSkeleton().GetBoneName(OvrBoneCapsule.BoneIndex);
-
+		PRAGMA_ENABLE_DEPRECATION_WARNINGS
 		float CapsuleHeight = Delta.Size();
 		float CapsuleRadius = OvrBoneCapsule.Radius * WorldToMeters;
 
@@ -598,7 +598,6 @@ ovrpBoneId FOculusHandTracking::ToOvrBone(EOculusXRBone Bone)
 FString FOculusHandTracking::GetBoneName(uint8 Bone)
 {
 	uint8 HandBone = Bone == ovrpBoneId_Invalid ? (uint8)EOculusXRBone::Invalid : Bone;
-
 	UEnum* BoneEnum = FindObject<UEnum>(ANY_PACKAGE, TEXT("EOculusXRBone"), true);
 	if (BoneEnum)
 	{

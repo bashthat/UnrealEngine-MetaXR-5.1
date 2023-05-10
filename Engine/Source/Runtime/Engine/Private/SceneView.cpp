@@ -762,6 +762,7 @@ FSceneView::FSceneView(const FSceneViewInitOptions& InitOptions)
 	, bSceneCaptureUsesRayTracing(InitOptions.bSceneCaptureUsesRayTracing)
 	, bIsReflectionCapture(InitOptions.bIsReflectionCapture)
 	, bIsPlanarReflection(InitOptions.bIsPlanarReflection)
+	, FarCullDistance(InitOptions.FarCullDistance)
 	, bIsVirtualTexture(false)
 	, bIsOfflineRender(false)
 	, bRenderSceneTwoSided(false)
@@ -781,7 +782,7 @@ PRAGMA_ENABLE_DEPRECATION_WARNINGS
 	, bForcePathTracerReset(false)
 	, GlobalClippingPlane(FPlane(0, 0, 0, 0))
 	, LensPrincipalPointOffsetScale(0.0f, 0.0f, 1.0f, 1.0f)
-	, FarCullDistance(InitOptions.FarCullDistance)
+	
 #if WITH_EDITOR
 	, OverrideLODViewOrigin(InitOptions.OverrideLODViewOrigin)
 	, bAllowTranslucentPrimitivesInHitProxy( true )

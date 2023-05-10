@@ -472,13 +472,17 @@ void FOculusXRInput::SendControllerEvents()
 							if (OvrTriggerAxis != State.TriggerAxis)
 							{
 								State.TriggerAxis = OvrTriggerAxis;
+								PRAGMA_DISABLE_DEPRECATION_WARNINGS
 								MessageHandler->OnControllerAnalog(bIsLeft ? EKeys::OculusTouch_Left_Trigger_Axis.GetFName() : EKeys::OculusTouch_Right_Trigger_Axis.GetFName(), ControllerPair.UnrealControllerIndex, State.TriggerAxis);
+								PRAGMA_ENABLE_DEPRECATION_WARNINGS
 							}
 
 							if (OvrGripAxis != State.GripAxis)
 							{
 								State.GripAxis = OvrGripAxis;
+								PRAGMA_DISABLE_DEPRECATION_WARNINGS
 								MessageHandler->OnControllerAnalog(bIsLeft ? EKeys::OculusTouch_Left_Grip_Axis.GetFName() : EKeys::OculusTouch_Right_Grip_Axis.GetFName(), ControllerPair.UnrealControllerIndex, State.GripAxis);
+								PRAGMA_ENABLE_DEPRECATION_WARNINGS
 							}
 
 							ovrpVector2f ThumbstickValue = OvrpControllerState.Thumbstick[HandIndex];
@@ -487,13 +491,17 @@ void FOculusXRInput::SendControllerEvents()
 							if (ThumbstickValue.x != State.ThumbstickAxes.X)
 							{
 								State.ThumbstickAxes.X = ThumbstickValue.x;
+								PRAGMA_DISABLE_DEPRECATION_WARNINGS
 								MessageHandler->OnControllerAnalog(bIsLeft ? EKeys::OculusTouch_Left_Thumbstick_X.GetFName() : EKeys::OculusTouch_Right_Thumbstick_X.GetFName(), ControllerPair.UnrealControllerIndex, State.ThumbstickAxes.X);
+								PRAGMA_ENABLE_DEPRECATION_WARNINGS
 							}
 
 							if (ThumbstickValue.y != State.ThumbstickAxes.Y)
 							{
+								PRAGMA_DISABLE_DEPRECATION_WARNINGS
 								State.ThumbstickAxes.Y = ThumbstickValue.y;
 								MessageHandler->OnControllerAnalog(bIsLeft ? EKeys::OculusTouch_Left_Thumbstick_Y.GetFName() : EKeys::OculusTouch_Right_Thumbstick_Y.GetFName(), ControllerPair.UnrealControllerIndex, State.ThumbstickAxes.Y);
+								PRAGMA_ENABLE_DEPRECATION_WARNINGS
 							}
 
 							if (TouchpadValue.x != State.TouchpadAxes.X)
@@ -509,25 +517,33 @@ void FOculusXRInput::SendControllerEvents()
 							if (OvrThumbRestForce != State.ThumbRestForce)
 							{
 								State.ThumbRestForce = OvrThumbRestForce;
+								PRAGMA_DISABLE_DEPRECATION_WARNINGS
 								MessageHandler->OnControllerAnalog(bIsLeft ? FOculusKey::OculusTouch_Left_ThumbRest_Force.GetFName() : FOculusKey::OculusTouch_Right_ThumbRest_Force.GetFName(), ControllerPair.UnrealControllerIndex, State.ThumbRestForce);
+								PRAGMA_ENABLE_DEPRECATION_WARNINGS
 							}
 
 							if (OvrStylusForce != State.StylusForce)
 							{
 								State.StylusForce = OvrStylusForce;
+								PRAGMA_DISABLE_DEPRECATION_WARNINGS
 								MessageHandler->OnControllerAnalog(bIsLeft ? FOculusKey::OculusTouch_Left_Stylus_Force.GetFName() : FOculusKey::OculusTouch_Right_Stylus_Force.GetFName(), ControllerPair.UnrealControllerIndex, State.StylusForce);
+								PRAGMA_ENABLE_DEPRECATION_WARNINGS
 							}
 
 							if (OvrIndexTriggerCurl != State.IndexTriggerCurl)
 							{
 								State.IndexTriggerCurl = OvrIndexTriggerCurl;
+								PRAGMA_DISABLE_DEPRECATION_WARNINGS
 								MessageHandler->OnControllerAnalog(bIsLeft ? FOculusKey::OculusTouch_Left_IndexTrigger_Curl.GetFName() : FOculusKey::OculusTouch_Right_IndexTrigger_Curl.GetFName(), ControllerPair.UnrealControllerIndex, State.IndexTriggerCurl);
+								PRAGMA_ENABLE_DEPRECATION_WARNINGS
 							}
 
 							if (OvrIndexTriggerSlide != State.IndexTriggerSlide)
 							{
+								PRAGMA_DISABLE_DEPRECATION_WARNINGS
 								State.IndexTriggerSlide = OvrIndexTriggerSlide;
 								MessageHandler->OnControllerAnalog(bIsLeft ? FOculusKey::OculusTouch_Left_IndexTrigger_Slide.GetFName() : FOculusKey::OculusTouch_Right_IndexTrigger_Slide.GetFName(), ControllerPair.UnrealControllerIndex, State.IndexTriggerSlide);
+								PRAGMA_ENABLE_DEPRECATION_WARNINGS
 							}
 
 							for (int32 ButtonIndex = 0; ButtonIndex < (int32)EOculusTouchControllerButton::TotalButtonCount; ++ButtonIndex)
@@ -703,8 +719,9 @@ void FOculusXRInput::SendControllerEvents()
 
 								if (CurrentAxisVal != CapState.State)
 								{
+									PRAGMA_DISABLE_DEPRECATION_WARNINGS
 									MessageHandler->OnControllerAnalog(CapState.Axis, ControllerPair.UnrealControllerIndex, CurrentAxisVal);
-
+									PRAGMA_ENABLE_DEPRECATION_WARNINGS
 									CapState.State = CurrentAxisVal;
 								}
 							}
@@ -847,7 +864,9 @@ void FOculusXRInput::SendControllerEvents()
 
 									if (PinchValue != PinchStrength.State)
 									{
+										PRAGMA_DISABLE_DEPRECATION_WARNINGS
 										MessageHandler->OnControllerAnalog(PinchStrength.Axis, ControllerPair.UnrealControllerIndex, PinchValue);
+										PRAGMA_ENABLE_DEPRECATION_WARNINGS
 										PinchStrength.State = PinchValue;
 									}
 								}
@@ -1022,16 +1041,19 @@ void FOculusXRInput::UpdateForceFeedback( const FOculusControllerPair& Controlle
 
 bool FOculusXRInput::OnControllerButtonPressed(const FOculusButtonState& ButtonState, int32 ControllerId, bool IsRepeat)
 {
+	PRAGMA_DISABLE_DEPRECATION_WARNINGS
 	bool result = MessageHandler->OnControllerButtonPressed(ButtonState.Key, ControllerId, IsRepeat);
 
 	if (!ButtonState.EmulatedKey.IsNone())
 	{
+
 		MessageHandler->OnControllerButtonPressed(ButtonState.EmulatedKey, ControllerId, IsRepeat);
 	}
 
 	return result;
+	PRAGMA_ENABLE_DEPRECATION_WARNINGS
 }
-
+PRAGMA_DISABLE_DEPRECATION_WARNINGS
 bool FOculusXRInput::OnControllerButtonReleased(const FOculusButtonState& ButtonState, int32 ControllerId, bool IsRepeat)
 {
 	bool result = MessageHandler->OnControllerButtonReleased(ButtonState.Key, ControllerId, IsRepeat);
@@ -1043,7 +1065,7 @@ bool FOculusXRInput::OnControllerButtonReleased(const FOculusButtonState& Button
 
 	return result;
 }
-
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
 FName FOculusXRInput::GetMotionControllerDeviceTypeName() const
 {
 	const static FName DefaultName(TEXT("OculusXRInputDevice"));
