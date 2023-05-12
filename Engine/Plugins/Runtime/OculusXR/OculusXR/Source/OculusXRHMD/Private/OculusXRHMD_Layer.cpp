@@ -778,9 +778,14 @@ bool FLayer::Initialize_RenderThread(const FSettings* Settings, FCustomPresent* 
 				const EAlphaChannelMode::Type PropagateAlpha = EAlphaChannelMode::FromInt(CVarPropagateAlpha->GetValueOnRenderThread());
 				if (PropagateAlpha == EAlphaChannelMode::AllowThroughTonemapper)
 				{
-					ETextureCreateFlags InvTexCreateFlags = TexCreate_ShaderResource | TexCreate_RenderTargetable;
-					FRHIResourceCreateInfo Info(TEXT("InvAlphaTexture"));
-					InvAlphaTexture = RHICreateTexture2D(SizeX, SizeY, ColorFormat, NumMips, NumSamples, InvTexCreateFlags, Info);
+					const FRHITextureCreateDesc TDesc =
+						FRHITextureCreateDesc::Create2D(TEXT("InvAlphaTexture"))
+							.SetExtent(SizeX, SizeY)
+							.SetFormat(ColorFormat)
+							.SetFlags(TexCreate_ShaderResource | TexCreate_RenderTargetable)
+							.SetNumMips(NumMips)
+							.SetNumSamples(NumSamples);
+					InvAlphaTexture = RHICreateTexture(TDesc);
 				}
 #endif
 
