@@ -319,12 +319,6 @@ bool FAndroidTargetPlatform::SupportsVulkanSM5() const
 	return bSupportsMobileVulkanSM5;
 }
 
-bool FAndroidTargetPlatform::SupportsSoftwareOcclusion() const
-{
-	static auto* CVarMobileAllowSoftwareOcclusion = IConsoleManager::Get().FindTConsoleVariableDataInt(TEXT("r.Mobile.AllowSoftwareOcclusion"));
-	return CVarMobileAllowSoftwareOcclusion->GetValueOnAnyThread() != 0;
-}
-
 /* ITargetPlatform overrides
  *****************************************************************************/
 
@@ -407,9 +401,6 @@ bool FAndroidTargetPlatform::SupportsFeature( ETargetPlatformFeatures Feature ) 
 		case ETargetPlatformFeatures::DeferredRendering:
 			return SupportsVulkanSM5();
 
-		case ETargetPlatformFeatures::SoftwareOcclusion:
-			return SupportsSoftwareOcclusion();
-
 		case ETargetPlatformFeatures::VirtualTextureStreaming:
 			return UsesVirtualTextures();
 
@@ -461,8 +452,9 @@ void FAndroidTargetPlatform::GetPlatformSpecificProjectAnalytics( TArray<FAnalyt
 		TEXT("SupportsVulkanSM5"), SupportsVulkanSM5(),
 		TEXT("SupportsES31"), SupportsES31()
 	);
-
-	AppendAnalyticsEventConfigArray(AnalyticsParamArray, TEXT("/Script/AndroidRuntimeSettings.AndroidRuntimeSettings"), TEXT("PackageForOculusMobile"), GEngineIni);
+	// BEGIN META SECTION - Meta Quest Android device support
+	AppendAnalyticsEventConfigBool(AnalyticsParamArray, TEXT("/Script/AndroidRuntimeSettings.AndroidRuntimeSettings"), TEXT("bPackageForMetaQuest"), GEngineIni);
+	// END META SECTION - Meta Quest Android device support
 }
 
 #if WITH_ENGINE

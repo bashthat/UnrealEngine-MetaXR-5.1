@@ -29,14 +29,13 @@ UOculusXRHandComponent::UOculusXRHandComponent(const FObjectInitializer& ObjectI
 void UOculusXRHandComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	PRAGMA_DISABLE_DEPRECATION_WARNINGS
+
 	// Use custom mesh if a skeletal mesh is already set, else try to load the runtime mesh
-	if (SkeletalMesh)
+	if (GetSkinnedAsset())
 	{
 		bCustomHandMesh = true;
 		bSkeletalMeshInitialized = true;
 	}
-	PRAGMA_ENABLE_DEPRECATION_WARNINGS
 	else
 	{
 		RuntimeSkeletalMesh = NewObject<USkeletalMesh>(this, TEXT("OculusHandMesh"));
@@ -48,10 +47,9 @@ void UOculusXRHandComponent::InitializeSkeletalMesh()
 {
 	if (RuntimeSkeletalMesh)
 	{
-		PRAGMA_DISABLE_DEPRECATION_WARNINGS
 		if (UOculusXRInputFunctionLibrary::GetHandSkeletalMesh(RuntimeSkeletalMesh, SkeletonType, MeshType))
 		{
-			SetSkeletalMesh(RuntimeSkeletalMesh);
+			SetSkinnedAssetAndUpdate(RuntimeSkeletalMesh, true);
 			if (MaterialOverride)
 			{
 				SetMaterial(0, MaterialOverride);
@@ -64,7 +62,6 @@ void UOculusXRHandComponent::InitializeSkeletalMesh()
 			{
 				CollisionCapsules = UOculusXRInputFunctionLibrary::InitializeHandPhysics(SkeletonType, this);
 			}
-		PRAGMA_ENABLE_DEPRECATION_WARNINGS
 		}
 	}
 }
@@ -99,7 +96,7 @@ void UOculusXRHandComponent::TickComponent(float DeltaTime, enum ELevelTick Tick
 				EOculusXRTrackingConfidence TrackingConfidence = UOculusXRInputFunctionLibrary::GetTrackingConfidence(SkeletonType);
 				bHidden |= TrackingConfidence != EOculusXRTrackingConfidence::High;
 			}
-			PRAGMA_DISABLE_DEPRECATION_WARNINGS
+
 			// Update Hand Scale
 			if (bUpdateHandScale)
 			{
@@ -108,11 +105,11 @@ void UOculusXRHandComponent::TickComponent(float DeltaTime, enum ELevelTick Tick
 			}
 
 			// Update Bone Pose Rotations
-			if (SkeletalMesh)
+			if (GetSkinnedAsset())
 			{
 				UpdateBonePose();
 			}
-			PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
 #if OCULUS_INPUT_SUPPORTED_PLATFORMS
 			// Check for system gesture pressed through player controller
 			if (APawn* Pawn = Cast<APawn>(GetOwner()))
@@ -165,14 +162,12 @@ void UOculusXRHandComponent::UpdateBonePose()
 			else
 			{
 				// Set Remaing Bone Rotations
-				PRAGMA_DISABLE_DEPRECATION_WARNINGS
-				int32 BoneIndex = SkeletalMesh->GetRefSkeleton().FindBoneIndex(BoneElem.Value);
+				int32 BoneIndex = GetSkinnedAsset()->GetRefSkeleton().FindBoneIndex(BoneElem.Value);
 				if (BoneIndex >= 0)
 				{
 					FQuat BoneRotation = UOculusXRInputFunctionLibrary::GetBoneRotation(SkeletonType, (EOculusXRBone)BoneElem.Key);
 					BoneSpaceTransforms[BoneIndex].SetRotation(BoneRotation);
 				}
-				PRAGMA_ENABLE_DEPRECATION_WARNINGS
 			}
 		}
 	}
@@ -183,14 +178,14 @@ void UOculusXRHandComponent::UpdateBonePose()
 		RootBoneRotation *= HandRootFixupRotation;
 		RootBoneRotation.Normalize();
 		BoneSpaceTransforms[0].SetRotation(RootBoneRotation);
-		PRAGMA_DISABLE_DEPRECATION_WARNINGS
+
 		// Set Remaining Bone Rotations
-		for (uint32 BoneIndex = 1; BoneIndex < (uint32)SkeletalMesh->GetRefSkeleton().GetNum(); BoneIndex++)
+		for (uint32 BoneIndex = 1; BoneIndex < (uint32)GetSkinnedAsset()->GetRefSkeleton().GetNum(); BoneIndex++)
 		{
 			FQuat BoneRotation = UOculusXRInputFunctionLibrary::GetBoneRotation(SkeletonType, (EOculusXRBone)BoneIndex);
 			BoneSpaceTransforms[BoneIndex].SetRotation(BoneRotation);
 		}
-	}   PRAGMA_ENABLE_DEPRECATION_WARNINGS
+	}
 	MarkRefreshTransformDirty();
 }
 

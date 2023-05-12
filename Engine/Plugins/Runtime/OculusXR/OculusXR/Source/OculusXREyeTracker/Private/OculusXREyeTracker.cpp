@@ -13,7 +13,7 @@ LICENSE file in the root directory of this source tree.
 #include "Engine/World.h"
 #include "IXRTrackingSystem.h"
 #include "Engine/Engine.h"
-#include "OculusXRHMDRuntimeSettings.h"
+
 #include "OculusXRHMDModule.h"
 #include "OculusXRHMDPrivate.h"
 
@@ -105,8 +105,7 @@ namespace OculusXRHMD
 		template <typename ReactOnState>
 		bool ReactOnEyeTrackerState(ReactOnState&& React) const
 		{
-			UOculusXRHMDRuntimeSettings* HMDSettings = GetMutableDefault<UOculusXRHMDRuntimeSettings>();
-			if (!bIsTrackerStarted && HMDSettings->XrApi != EOculusXRXrApi::NativeOpenXR && HMDSettings->bEyeTrackingEnabled)
+			if (!bIsTrackerStarted)
 			{
 				bIsTrackerStarted = OVRP_SUCCESS(FOculusXRHMDModule::GetPluginWrapper().StartEyeTracking());
 			}

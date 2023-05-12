@@ -220,12 +220,12 @@ void UOculusXRBodyTrackingComponent::ResetAllBoneTransforms()
 
 bool UOculusXRBodyTrackingComponent::InitializeBodyBones()
 {
-	PRAGMA_DISABLE_DEPRECATION_WARNINGS
 	if (SkeletalMesh == nullptr)
 	{
 		UE_LOG(LogOculusXRMovement, Display, TEXT("No SkeletalMesh in this component."));
 		return false;
 	}
+
 	for (const auto& it : BoneNames)
 	{
 		int32 BoneIndex = GetBoneIndex(it.Value);
@@ -233,7 +233,6 @@ bool UOculusXRBodyTrackingComponent::InitializeBodyBones()
 		if (BoneIndex == INDEX_NONE)
 		{
 			UE_LOG(LogOculusXRMovement, Display, TEXT("Could not find bone %s in skeletal mesh %s"), *StaticEnum<EOculusXRBoneID>()->GetValueAsString(it.Key), *SkeletalMesh->GetName());
-	PRAGMA_ENABLE_DEPRECATION_WARNINGS
 		}
 		else
 		{

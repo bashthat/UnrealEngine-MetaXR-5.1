@@ -226,7 +226,7 @@ bool UOculusXRFaceTrackingComponent::InitializeFaceTracking()
 		UE_LOG(LogOculusXRMovement, Warning, TEXT("Could not find skeletal mesh component with name: (%s). (%s:%s)"), *TargetMeshComponentName.ToString(), *GetOwner()->GetName(), *GetName());
 		return false;
 	}
-	PRAGMA_DISABLE_DEPRECATION_WARNINGS
+
 	if (TargetMeshComponent && TargetMeshComponent->SkeletalMesh)
 	{
 		const TMap<FName, int32>& MorphTargetIndexMap = TargetMeshComponent->SkeletalMesh->GetMorphTargetIndexMap();
@@ -235,7 +235,7 @@ bool UOculusXRFaceTrackingComponent::InitializeFaceTracking()
 		{
 			ExpressionValid[static_cast<int32>(it.Key)] = MorphTargetIndexMap.Contains(it.Value);
 		}
-	PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
 		return true;
 	}
 
