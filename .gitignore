@@ -280,7 +280,7 @@ Engine/Extras/ThirdPartyNotUE/SDKs/HostLinux/**
 /Engine/Plugins/DLSSMoviePipelineSupport/**
 /Engine/Plugins/NIS/**
 /Engine/Plugins/LowPolyCore/**
-
+!/Engine/Build/Commit.gitdeps.xml
 
 
 # Add exceptions for Oculus Collaboration folder
