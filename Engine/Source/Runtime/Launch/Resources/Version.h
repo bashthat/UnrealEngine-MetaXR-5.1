@@ -58,6 +58,9 @@
 #define ENGINE_MINOR_VERSION	1
 #define ENGINE_PATCH_VERSION	1
 
+// version of engine patches for Streamline/DLSS-FG support
+#define ENGINE_STREAMLINE_VERSION 1
+
 // Macros for encoding strings
 #define VERSION_TEXT(x) TEXT(x)
 #define VERSION_STRINGIFY_2(x) VERSION_TEXT(#x)

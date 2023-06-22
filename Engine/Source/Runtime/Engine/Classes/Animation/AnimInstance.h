@@ -904,9 +904,6 @@ protected:
 	UE_DEPRECATED(5.0, "Use StopAllMontagesByGroupName with other signature.")
 	void StopAllMontagesByGroupName(FName InGroupName, const FAlphaBlend& BlendOut);
 
-	/** Stop all active montages belonging to 'InGroupName' */
-	void StopAllMontagesByGroupName(FName InGroupName, const FMontageBlendSettings& BlendOutSettings);
-
 	/** Update weight of montages  **/
 	virtual void Montage_UpdateWeight(float DeltaSeconds);
 	/** Advance montages **/
@@ -916,6 +913,8 @@ protected:
 	float Montage_PlayInternal(UAnimMontage* MontageToPlay, const FMontageBlendSettings& BlendInSettings, float InPlayRate = 1.f, EMontagePlayReturnType ReturnValueType = EMontagePlayReturnType::MontageLength, float InTimeToStartMontageAt = 0.f, bool bStopAllMontages = true);
 
 public:
+	/** Stop all active montages belonging to 'InGroupName' */
+	void StopAllMontagesByGroupName(FName InGroupName, const FMontageBlendSettings& BlendOutSettings);
 
 	/**  Builds an inertialization request from the montage's group, provided duration and optional blend profile*/
 	void RequestMontageInertialization(const UAnimMontage* Montage, float Duration, const UBlendProfile* BlendProfile = nullptr);
