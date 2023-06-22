@@ -1,8 +1,0 @@
-!Binaries
-!Binaries/ThirdParty/**/*.dll
-!Binaries/ThirdParty/**/*.pdb
-!Docs/*.pdf
-!Images/*.png
-!Resources/*.png
-!Source/ThirdParty/Streamline/**/*.lib
-
