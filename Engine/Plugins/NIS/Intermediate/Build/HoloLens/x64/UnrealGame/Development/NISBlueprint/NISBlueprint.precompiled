@@ -1,0 +1,8 @@
+{
+	"OutputFiles": [
+		"..\\..\\..\\..\\..\\..\\..\\..\\..\\Intermediate\\Build\\HoloLens\\x64\\UnrealGame\\Development\\Engine\\SharedPCH.Engine.ShadowErrors.h.obj",
+		"NISBlueprint.init.gen.cpp.obj",
+		"NISLibrary.gen.cpp.obj",
+		"NISLibrary.cpp.obj"
+	]
+}

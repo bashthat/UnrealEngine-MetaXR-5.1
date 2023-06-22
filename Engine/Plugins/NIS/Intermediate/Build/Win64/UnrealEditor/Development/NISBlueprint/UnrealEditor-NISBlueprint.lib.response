@@ -1,0 +1,14 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UnrealEditor-NISBlueprint.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"..\Intermediate\Build\Win64\UnrealEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h.obj"
+"..\Plugins\NIS\Intermediate\Build\Win64\UnrealEditor\Development\NISBlueprint\NISBlueprint.init.gen.cpp.obj"
+"..\Plugins\NIS\Intermediate\Build\Win64\UnrealEditor\Development\NISBlueprint\NISLibrary.gen.cpp.obj"
+"..\Plugins\NIS\Intermediate\Build\Win64\UnrealEditor\Development\NISBlueprint\NISLibrary.cpp.obj"
+"..\Intermediate\Build\Win64\UnrealEditor\Development\Default.rc2.res"
+/OUT:"..\Plugins\NIS\Intermediate\Build\Win64\UnrealEditor\Development\NISBlueprint\UnrealEditor-NISBlueprint.lib"
