@@ -276,12 +276,12 @@ Engine/Extras/ThirdPartyNotUE/SDKs/HostLinux/**
 
 # Ignore test json data files in NeuralNetworkInterface
 /Engine/Plugins/Experimental/NNI/Source/ThirdParty/Deps/json/**
-/Engine/Plugins/DLSS/**
-/Engine/Plugins/DLSSMoviePipelineSupport/**
-/Engine/Plugins/NIS/**
+!/Engine/Plugins/DLSS/**
+!/Engine/Plugins/DLSSMoviePipelineSupport/**
+!/Engine/Plugins/NIS/**
 /Engine/Plugins/LowPolyCore/**
 /Engine/Plugins/GeneralMovement/**
-/Engine/Plugins/Runtime/Nvidia/Streamline/**
+!/Engine/Plugins/Runtime/Nvidia/Streamline/**
 !/Engine/Build/Commit.gitdeps.xml
 
 

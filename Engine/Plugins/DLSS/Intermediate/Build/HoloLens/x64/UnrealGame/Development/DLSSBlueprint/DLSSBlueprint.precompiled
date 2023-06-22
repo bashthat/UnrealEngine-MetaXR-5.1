@@ -1,7 +1,0 @@
-{
-	"OutputFiles": [
-		"..\\..\\..\\..\\..\\..\\..\\..\\..\\Intermediate\\Build\\HoloLens\\x64\\UnrealGame\\Development\\Engine\\SharedPCH.Engine.ShadowErrors.h.obj",
-		"DLSSBlueprint.init.gen.cpp.obj",
-		"DLSSLibrary.cpp.obj"
-	]
-}
