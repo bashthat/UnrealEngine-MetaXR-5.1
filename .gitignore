@@ -282,6 +282,7 @@ Engine/Extras/ThirdPartyNotUE/SDKs/HostLinux/**
 /Engine/Plugins/LowPolyCore/**
 /Engine/Plugins/GeneralMovement/**
 !/Engine/Plugins/Runtime/Nvidia/Streamline/**
+/Engine/Plugins/VDB/**
 !/Engine/Build/Commit.gitdeps.xml
 
 
