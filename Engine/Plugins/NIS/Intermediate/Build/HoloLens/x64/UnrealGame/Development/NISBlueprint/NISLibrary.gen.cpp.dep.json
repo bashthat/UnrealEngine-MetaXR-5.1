@@ -1,0 +1,15 @@
+{
+    "Version": "1.1",
+    "Data": {
+        "Source": "f:\\unrealengine-metaxr-5.1\\engine\\plugins\\nis\\intermediate\\build\\hololens\\x64\\unrealgame\\inc\\nisblueprint\\uht\\nislibrary.gen.cpp",
+        "ProvidedModule": "",
+        "PCH": "f:\\unrealengine-metaxr-5.1\\engine\\intermediate\\build\\hololens\\x64\\unrealgame\\development\\engine\\sharedpch.engine.shadowerrors.h.pch",
+        "Includes": [
+            "f:\\unrealengine-metaxr-5.1\\engine\\plugins\\nis\\intermediate\\build\\hololens\\x64\\unrealgame\\development\\nisblueprint\\definitions.nisblueprint.h",
+            "f:\\unrealengine-metaxr-5.1\\engine\\plugins\\nis\\source\\nisblueprint\\public\\nislibrary.h",
+            "f:\\unrealengine-metaxr-5.1\\engine\\plugins\\nis\\intermediate\\build\\hololens\\x64\\unrealgame\\inc\\nisblueprint\\uht\\nislibrary.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

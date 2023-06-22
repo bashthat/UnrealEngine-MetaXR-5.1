@@ -1,0 +1,32 @@
+{
+    "Version": "1.1",
+    "Data": {
+        "Source": "f:\\unrealengine-metaxr-5.1\\engine\\plugins\\runtime\\nvidia\\streamline\\intermediate\\build\\hololens\\x64\\unrealgame\\development\\streamlineblueprint\\module.streamlineblueprint.cpp",
+        "ProvidedModule": "",
+        "PCH": "f:\\unrealengine-metaxr-5.1\\engine\\intermediate\\build\\hololens\\x64\\unrealgame\\development\\engine\\sharedpch.engine.shadowerrors.h.pch",
+        "Includes": [
+            "f:\\unrealengine-metaxr-5.1\\engine\\plugins\\runtime\\nvidia\\streamline\\intermediate\\build\\hololens\\x64\\unrealgame\\development\\streamlineblueprint\\definitions.streamlineblueprint.h",
+            "f:\\unrealengine-metaxr-5.1\\engine\\plugins\\runtime\\nvidia\\streamline\\intermediate\\build\\hololens\\x64\\unrealgame\\inc\\streamlineblueprint\\uht\\streamlineblueprint.init.gen.cpp",
+            "f:\\unrealengine-metaxr-5.1\\engine\\plugins\\runtime\\nvidia\\streamline\\intermediate\\build\\hololens\\x64\\unrealgame\\inc\\streamlineblueprint\\uht\\streamlinelibrarydlssg.gen.cpp",
+            "f:\\unrealengine-metaxr-5.1\\engine\\plugins\\runtime\\nvidia\\streamline\\source\\streamlineblueprint\\public\\streamlinelibrarydlssg.h",
+            "f:\\unrealengine-metaxr-5.1\\engine\\plugins\\runtime\\nvidia\\streamline\\intermediate\\build\\hololens\\x64\\unrealgame\\inc\\streamlineblueprint\\uht\\streamlinelibrarydlssg.generated.h",
+            "f:\\unrealengine-metaxr-5.1\\engine\\plugins\\runtime\\nvidia\\streamline\\intermediate\\build\\hololens\\x64\\unrealgame\\inc\\streamlineblueprint\\uht\\streamlinelibraryreflex.gen.cpp",
+            "f:\\unrealengine-metaxr-5.1\\engine\\plugins\\runtime\\nvidia\\streamline\\source\\streamlineblueprint\\public\\streamlinelibraryreflex.h",
+            "f:\\unrealengine-metaxr-5.1\\engine\\plugins\\runtime\\nvidia\\streamline\\intermediate\\build\\hololens\\x64\\unrealgame\\inc\\streamlineblueprint\\uht\\streamlinelibraryreflex.generated.h",
+            "f:\\unrealengine-metaxr-5.1\\engine\\plugins\\runtime\\nvidia\\streamline\\source\\streamlineblueprint\\private\\streamlinelibrary.cpp",
+            "f:\\unrealengine-metaxr-5.1\\engine\\plugins\\runtime\\nvidia\\streamline\\source\\streamlineblueprint\\public\\streamlinelibrary.h",
+            "f:\\unrealengine-metaxr-5.1\\engine\\plugins\\runtime\\nvidia\\streamline\\source\\streamlineblueprint\\private\\streamlinelibraryprivate.h",
+            "f:\\unrealengine-metaxr-5.1\\engine\\plugins\\runtime\\nvidia\\streamline\\source\\streamlineblueprint\\private\\streamlinelibrarydlssg.cpp",
+            "f:\\unrealengine-metaxr-5.1\\engine\\source\\runtime\\projects\\public\\interfaces\\ipluginmanager.h",
+            "f:\\unrealengine-metaxr-5.1\\engine\\source\\runtime\\projects\\public\\plugindescriptor.h",
+            "f:\\unrealengine-metaxr-5.1\\engine\\source\\runtime\\projects\\public\\custombuildsteps.h",
+            "f:\\unrealengine-metaxr-5.1\\engine\\source\\runtime\\projects\\public\\localizationdescriptor.h",
+            "f:\\unrealengine-metaxr-5.1\\engine\\source\\runtime\\projects\\public\\moduledescriptor.h",
+            "f:\\unrealengine-metaxr-5.1\\engine\\source\\runtime\\projects\\public\\pluginreferencedescriptor.h",
+            "f:\\unrealengine-metaxr-5.1\\engine\\source\\runtime\\projects\\public\\versescope.h",
+            "f:\\unrealengine-metaxr-5.1\\engine\\plugins\\runtime\\nvidia\\streamline\\source\\streamlineblueprint\\private\\streamlinelibraryreflex.cpp"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}
