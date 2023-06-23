@@ -20,7 +20,7 @@ You can find the latest UE5 plugin release notes [here](https://developer.oculus
 In addition to those listed, there are numerous other updates. Many of them are related to the Vulkan renderer.
  
 #### Samples
-* [[Samples/Oculus/](https://github.com/Oculus-VR/UnrealEngine/blob/oculus-5.1/Samples/Oculus)
+* [Samples/Oculus/](https://github.com/Oculus-VR/UnrealEngine/blob/oculus-5.1/Samples/Oculus)
  
 Additional samples can be found in the [Oculus Samples GitHub.](
 https://github.com/oculus-samples)
